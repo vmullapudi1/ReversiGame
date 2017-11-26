@@ -15,7 +15,8 @@ class Reversi_Main {
         final int N=queryBoardSize();
         b=new Board(N);
         //DEBUG
-        System.out.println(b);
+        //System.out.println(b);
+        //System.out.println(b);
         //create the players
         switch (queryPlayer1()){
 
@@ -42,20 +43,26 @@ class Reversi_Main {
     }
 
     private static void startGame(){
+        //Used to store the moves returned by the players to pass to the board
         Point p;
+        //Run the game until it is determined that the game has ended
         while(true){
             p=p1.getMove(b);
             if(p==null) {
+                JOptionPane.showMessageDialog(null,"The game has ended due, as no move was selected (game terminated or game over)");
                 break;
             }
             b.performMove(p,p1.getPiece());
-            System.out.println(b);
+            //DEBUG Print boardstate to console
+            //System.out.println(b);
             p=p2.getMove(b);
             if(p==null) {
+                JOptionPane.showMessageDialog(null,"The game has ended due, as no move was selected (game terminated or game over)");
                 break;
             }
             b.performMove(p,p2.getPiece());
-            System.out.println(b);
+            //DEBUG print boardstate to console
+            //System.out.println(b);
 
         }
         scoreGame();

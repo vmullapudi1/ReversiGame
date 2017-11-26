@@ -24,7 +24,7 @@ public class HumanPlayer extends Player {
         if(moves.length==0) {
             return null;
         }
-        return (Point)JOptionPane.showInputDialog(null,"Choose on of the following legal moves:",
+        return (Point)JOptionPane.showInputDialog(null,b.toString()+"\nChoose one of the following legal moves:",
                 ("Player Move Select: "+super.getPlayerName()),JOptionPane.QUESTION_MESSAGE,null,moves,moves[0]);
     }
 

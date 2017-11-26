@@ -5,7 +5,7 @@
 public enum Piece {
     BLACK("B"),
     WHITE("W"),
-    NONE("-");
+    NONE("0");
     private String letter;
 
     Piece(String s){
