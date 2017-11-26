@@ -69,50 +69,47 @@ class Board {
      void performMove(java.awt.Point move, Piece p) {
         boardState[move.y][move.x]=p;
         currentEmptySpaces.remove(move);
-        int tempX=move.x;
-        int tempY=move.y;
+        int tempX;
+        int tempY;
         Piece current;
-        boolean valid=false;
-        //check up, down,left/right, and all the diagonal directions for being terminated in a piece of the same color and having the other color in between
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                tempX+=x;
-                tempY+=y;
-                //check to make sure still in bounds of the array
-                if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
-                    continue;
-                current  = boardState[tempY][tempX];
-                //if an empty space is reached or the same color search in this direction is over
-                if(current==p||current==Piece.NONE)
-                    continue;
-                //Search in a given direction
-                while (true) {
-                    tempX += x;
-                    tempY += y;
-                    //stop searching in this direction if the bounds are broken
-                    if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
-                        break;
-                    current = boardState[tempY][tempX];
+         for (int x = -1; x <= 1; x++) {
+             for (int y = -1; y <= 1; y++) {
+                 tempX=move.x+x;
+                 tempY=move.y+y;
+                 //check to make sure still in bounds of the array
+                 if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
+                     continue;
+                 current  = boardState[tempY][tempX];
+                 //if an empty space is reached or the same color search in this direction is over-Need a piece of the other color in the middle
+                 if(current==p||current==Piece.NONE)
+                     continue;
+                 //
+                 while (true) {
+                     //Move in the direction
+                     tempX += x;
+                     tempY += y;
+                     //stop searching in this direction if the bounds are broken
+                     if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
+                         break;
 
-                    // If the algorithm finds another piece of the same color along a direction
-                    // end the search in that direction, since the move is valid
-                    if (current == p) {
-                        valid = true;
-                        break;
-                    }
-                }
-                //if valid direction, backtrack and flip all the tokens in the middle
-                if(valid){
-                    boardState[tempY][tempX]=p;
-                    while(true){
-                        if(boardState[tempY][tempX]==p)
-                            break;
-                        tempX -= x;
-                        tempY -= y;
-                        boardState[tempY][tempX]=p;
-                    }
-                }
-            }
+                     current = boardState[tempY][tempX];
+
+                     // If the algorithm finds another piece of the same color along a direction
+                     // start going backwards and flipping over pieces, and then stop going in this direction
+                     if (current == p) {
+                         while(true){
+                             tempX-=x;
+                             tempY-=y;
+                             boardState[tempY][tempX]=p;
+                             //stop flipping over once we've gotten back to the original spot
+                             if(tempX==move.x&&tempY==move.y)
+                                 break;
+                         }
+                         break;
+                     }
+                 }
+             }
+
         }
 
 

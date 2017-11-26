@@ -57,7 +57,7 @@ class Reversi_Main {
             //System.out.println(b);
             p=p2.getMove(b);
             if(p==null) {
-                JOptionPane.showMessageDialog(null,"The game has ended due, as no move was selected (game terminated or game over)");
+                JOptionPane.showMessageDialog(null,"The game has ended, as no move was selected (game terminated or game over)");
                 break;
             }
             b.performMove(p,p2.getPiece());
