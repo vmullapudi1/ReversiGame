@@ -1,6 +1,5 @@
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * 
@@ -11,11 +10,11 @@ public class CPUPlayer extends Player {
      * Default constructor
      */
     public CPUPlayer() {
-        this(Piece.BLACK);
+        this(Piece.BLACK,"Default CPU");
     }
 
-    public CPUPlayer(Piece p){
-        super(p);
+    CPUPlayer(Piece p,String name){
+        super(p,name);
     }
 
     @Override

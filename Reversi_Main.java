@@ -3,7 +3,7 @@ import java.awt.Point;
 /**
  * Initializes the board and players, runs the game
  */
-public class Reversi_Main {
+class Reversi_Main {
     private static Board b;
     private static Player p1;
     private static Player p2;
@@ -20,20 +20,20 @@ public class Reversi_Main {
         switch (queryPlayer1()){
 
             case HUMAN:
-                p1=new HumanPlayer(Piece.WHITE);
+                p1=new HumanPlayer(Piece.WHITE, "Player 1");
                 break;
             case CPU:
-                p1=new CPUPlayer(Piece.WHITE);
+                p1=new CPUPlayer(Piece.WHITE, "Player 1-CPU");
                 break;
         }
 
         switch (queryPlayer2()){
 
             case HUMAN:
-                p2=new HumanPlayer(Piece.BLACK);
+                p2=new HumanPlayer(Piece.BLACK, "Player 2");
                 break;
             case CPU:
-                p2=new CPUPlayer(Piece.BLACK);
+                p2=new CPUPlayer(Piece.BLACK, "Player 2-CPU");
                 break;
         }
 
@@ -42,19 +42,58 @@ public class Reversi_Main {
     }
 
     private static void startGame(){
-        boolean gameOver=false;
         Point p;
-        while(!gameOver){
+        while(true){
             p=p1.getMove(b);
+            if(p==null) {
+                break;
+            }
             b.performMove(p,p1.getPiece());
             System.out.println(b);
-            //checkOver();
             p=p2.getMove(b);
+            if(p==null) {
+                break;
+            }
             b.performMove(p,p2.getPiece());
             System.out.println(b);
-            //checkOver;
+
         }
+        scoreGame();
+
     }
+
+    private static void scoreGame() {
+        int[]scores=new int[2];
+        for(Piece[]i:b.getBoardState()){
+            for(Piece j:i){
+                if(j==Piece.WHITE)
+                    scores[0]++;
+                else if(j==Piece.BLACK)
+                    scores[1]++;
+            }
+        }
+        //Print scores and winner
+        StringBuilder message=new StringBuilder("P1");
+        if(p1 instanceof HumanPlayer){
+            message.append(", a human player, scored "+scores[0]+" points.\n");
+        }
+        else
+            message.append(", a computer player, scored "+scores[0]+" points.\n");
+
+        if(p2 instanceof HumanPlayer){
+            message.append("P2, a human player, scored "+scores[1]+" points.\n");
+        }
+        else
+            message.append("P2, a computer player, scored "+scores[1]+" points.\n");
+        if(scores[0]>scores[1])
+            message.append("P1 wins!");
+        else if(scores[0]==scores[1])
+            message.append("P1 tied P2!");
+        else
+            message.append("P2 wins!");
+        JOptionPane.showMessageDialog(null,message.toString(),"Game Over!",JOptionPane.INFORMATION_MESSAGE);
+    }
+
     /**
      * @return an even integer n>=2 representing the board side length. Asks the user.     *
      */

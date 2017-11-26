@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.Point;
-import java.util.regex.Pattern;
+import java.util.*;
 
 /**
  * 
@@ -11,38 +11,21 @@ public class HumanPlayer extends Player {
      * Default constructor
      */
     public HumanPlayer(){
-        this(Piece.WHITE);
+        this(Piece.WHITE,"Default Human");
     }
 
-    public HumanPlayer(Piece p) {
-        super(p);
+    HumanPlayer(Piece p, String name) {
+        super(p,name);
     }
 
     public Point getMove(Board b){
-        boolean valid=false;
-        String s;
-        int x;
-        int y;
-        while(!valid) {
-            s=JOptionPane.showInputDialog(null, "Enter the point of your next move (ordered pair)", "Next Move?",
-                    JOptionPane.QUESTION_MESSAGE);
-
-                String[]nums=s.replaceAll("[()]","").split(",");
-                try{
-                    x=Integer.parseInt(nums[0]);
-                    y=Integer.parseInt(nums[1]);
-                    Point p=new Point(x,y);
-                    if(checkMoveLegality(p,b))
-                        return p;
-                }
-                catch(NumberFormatException e){
-                    JOptionPane.showMessageDialog(null,"The input cannot be read. Please Try again.",
-                        "Couldn't parse ordered pair",JOptionPane.INFORMATION_MESSAGE);
-                }
-            JOptionPane.showMessageDialog(null,"The input is not valid. Please Try again.",
-                    "Invalid input",JOptionPane.INFORMATION_MESSAGE);
+        LinkedHashSet<Point> legalMoves=super.legalMoves(b);
+        Point[] moves=legalMoves.toArray(new Point[legalMoves.size()]);
+        if(moves.length==0) {
+            return null;
         }
-        return null;
+        return (Point)JOptionPane.showInputDialog(null,"Choose on of the following legal moves:",
+                ("Player Move Select: "+super.getPlayerName()),JOptionPane.QUESTION_MESSAGE,null,moves,moves[0]);
     }
 
 }
