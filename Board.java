@@ -1,5 +1,7 @@
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 /**
  * Stores the and alters the state of the board as needed.
  */
@@ -9,14 +11,16 @@ class Board {
     private LinkedHashSet<Point> currentEmptySpaces;
 
 
-    /**
-     * Default constructor
-     */
-    public Board() {
-        this(4);
-    }
+// --Commented out by Inspection START (11/27/2017 15:17):
+//    /**
+//     * Default constructor
+//     */
+//    public Board() {
+//        this(4);
+//    }
+// --Commented out by Inspection STOP (11/27/2017 15:17)
 
-    public Board(Piece[][] boardState) {
+    private Board(Piece[][] boardState) {
         this.boardState = boardState;
         this.boardDimension = boardState.length;
         this.currentEmptySpaces = findEmptySpaces(boardState);
@@ -55,8 +59,15 @@ class Board {
         return boardState;
     }
 
+    /**
+     * a utility method to get each players score given a board state
+     *
+     * @param b the board to score
+     * @return an int[] with index 0 being p1's score and index 1 being p2's score
+     */
     static int[] scoreGame(Board b) {
         int[] scores = new int[2];
+        //count the number of pieces of each color on the board
         for (Piece[] i : b.getBoardState()) {
             for (Piece j : i) {
                 if (j == Piece.WHITE)
@@ -68,10 +79,16 @@ class Board {
         return scores;
     }
 
+    /**
+     * Finds all the empty spaces in a boardstate
+     *
+     * @param c a piece array representing the boardstate
+     * @return a list containing the empty spaces
+     */
     private static LinkedHashSet<Point> findEmptySpaces(Piece[][] c){
         LinkedHashSet<Point> spaces=new LinkedHashSet<>();
-        for(int i=0;i<c.length;i++){
-            for(int j=0;j<c[i].length;j++){
+        for (int i = 0; i < c.length; i++) {
+            for (int j = 0; j < c[i].length; j++) {
                 if(c[i][j]==Piece.NONE)
                     spaces.add(new Point(j, i));
             }
@@ -86,8 +103,11 @@ class Board {
      * @return the new boardstate after the move is done
      */
     static Board simulateMove(java.awt.Point move, Piece p, Board b) {
-        Piece[][] boardState = b.getBoardState();
         int boardDimension = b.getBoardDimension();
+        //create a copy of the board so that simulating the move doesn't change the original board
+        Piece[][] boardState = new Piece[boardDimension][boardDimension];
+        for (int i = 0; i < boardDimension; i++)
+            System.arraycopy(b.getBoardState()[i], 0, boardState[i], 0, boardDimension);
         boardState[move.y][move.x]=p;
         int tempX;
         int tempY;
@@ -113,7 +133,9 @@ class Board {
                         break;
 
                     current = boardState[tempY][tempX];
-
+                    //If the piece that is run into is empty, the move isn't valid (can not have open spaces).
+                    if (current == Piece.NONE)
+                        break;
                     // If the algorithm finds another piece of the same color along a direction
                     // start going backwards and flipping over pieces, and then stop going in this direction
                     if (current == p) {
@@ -132,7 +154,6 @@ class Board {
 
         }
         return new Board(boardState);
-
     }
 
     LinkedHashSet<Point> getCurrentEmptySpaces() {
@@ -141,6 +162,7 @@ class Board {
     }
 
     /**
+     * Enacts a move on the board by utilizing the simulation method to generate the new board
      * @param move the location to place the piece
      * @param p    The piece type to place an the board location indicated by move
      */

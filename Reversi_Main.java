@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.Point;
+import java.awt.*;
 /**
  * Initializes the board and players, runs the game
  */
@@ -15,8 +15,7 @@ class Reversi_Main {
         final int N=queryBoardSize();
         b=new Board(N);
         //DEBUG
-        //System.out.println(b);
-        //System.out.println(b);
+        System.out.println(b);
         //create the players
         switch (queryPlayer1()){
 
@@ -37,11 +36,14 @@ class Reversi_Main {
                 p2=new CPUPlayer(Piece.BLACK, "Player 2-CPU");
                 break;
         }
-
+        //Begin the game loop
         startGame();
 
     }
 
+    /**
+     * Runs the game until it is over
+     */
     private static void startGame(){
         //Used to store the moves returned by the players to pass to the board
         Point p;
@@ -67,25 +69,28 @@ class Reversi_Main {
             System.out.println(b);
 
         }
+        //show the scores/who won
         displayScore(b);
-
     }
 
+    /**
+     * Prints the scores and victor given a board state
+     *
+     * @param b the board to print the scores for
+     */
     private static void displayScore(Board b) {
         int[] scores = Board.scoreGame(b);
         //Print scores and winner
-        StringBuilder message=new StringBuilder("P1");
-        if(p1 instanceof HumanPlayer){
-            message.append(", a human player, scored "+scores[0]+" points.\n");
-        }
-        else
-            message.append(", a computer player, scored "+scores[0]+" points.\n");
+        StringBuilder message = new StringBuilder();
+        if (p1 instanceof HumanPlayer) {
+            message.append("P1, a human player, scored ").append(scores[0]).append(" points.\n");
+        } else
+            message.append("P1, a computer player, scored ").append(+scores[0]).append(" points.\n");
 
-        if(p2 instanceof HumanPlayer){
-            message.append("P2, a human player, scored "+scores[1]+" points.\n");
-        }
-        else
-            message.append("P2, a computer player, scored "+scores[1]+" points.\n");
+        if (p2 instanceof HumanPlayer) {
+            message.append("P2, a human player, scored ").append(scores[1]).append(" points.\n");
+        } else
+            message.append("P2, a computer player, scored ").append(scores[1]).append(" points.\n");
         if(scores[0]>scores[1])
             message.append("P1 wins!");
         else if(scores[0]==scores[1])
@@ -93,9 +98,12 @@ class Reversi_Main {
         else
             message.append("P2 wins!");
         JOptionPane.showMessageDialog(null,message.toString(),"Game Over!",JOptionPane.INFORMATION_MESSAGE);
+        //DEBUG
+        System.out.println(message);
     }
 
     /**
+     * ask the user how big to make the board
      * @return an even integer n>=2 representing the board side length. Asks the user.     *
      */
     private static int queryBoardSize() {
@@ -107,8 +115,7 @@ class Reversi_Main {
             String s = JOptionPane.showInputDialog("Enter the desired board size (even numbers greater than or equal to 2 only)", "4");
             try {
                 n=Integer.parseInt(s);
-            }
-            catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 int choice=JOptionPane.showConfirmDialog(null, "The input Number could not be parsed. would you like to try again?","Input error",
                         JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
                 if(choice==JOptionPane.NO_OPTION){
@@ -130,6 +137,7 @@ class Reversi_Main {
     }
 
     /**
+     * ask the user what type of player to make the first player
      * @return The type of player that is represented by P1
      */
     private static PlayerType queryPlayer1() {
@@ -142,6 +150,7 @@ class Reversi_Main {
     }
 
     /**
+     * ask the user what type of player to make p2
      * @return the type of player that is represented by p2;
      */
     private static PlayerType queryPlayer2() {

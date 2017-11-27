@@ -1,6 +1,6 @@
 
 /**
- * 
+ * An enum that enumerates the types of pieces that are present in the game board
  */
 public enum Piece {
     BLACK("B"),
