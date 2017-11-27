@@ -6,17 +6,20 @@ import java.util.*;
 class Board {
     private Piece[][] boardState;
     private int boardDimension;
-
-    LinkedHashSet<Point> getCurrentEmptySpaces() {
-        return currentEmptySpaces;
-    }
-
     private LinkedHashSet<Point> currentEmptySpaces;
+
+
     /**
      * Default constructor
      */
     public Board() {
         this(4);
+    }
+
+    public Board(Piece[][] boardState) {
+        this.boardState = boardState;
+        this.boardDimension = boardState.length;
+        this.currentEmptySpaces = findEmptySpaces(boardState);
     }
 
     /**
@@ -52,6 +55,19 @@ class Board {
         return boardState;
     }
 
+    static int[] scoreGame(Board b) {
+        int[] scores = new int[2];
+        for (Piece[] i : b.getBoardState()) {
+            for (Piece j : i) {
+                if (j == Piece.WHITE)
+                    scores[0]++;
+                else if (j == Piece.BLACK)
+                    scores[1]++;
+            }
+        }
+        return scores;
+    }
+
     private static LinkedHashSet<Point> findEmptySpaces(Piece[][] c){
         LinkedHashSet<Point> spaces=new LinkedHashSet<>();
         for(int i=0;i<c.length;i++){
@@ -62,59 +78,76 @@ class Board {
         }
         return spaces;
     }
+
     /**
      * @param move the location to place the piece
      * @param p The piece type to place an the board location indicated by move
+     * @param b the board upon which to enact the move
+     * @return the new boardstate after the move is done
      */
-     void performMove(java.awt.Point move, Piece p) {
+    static Board simulateMove(java.awt.Point move, Piece p, Board b) {
+        Piece[][] boardState = b.getBoardState();
+        int boardDimension = b.getBoardDimension();
         boardState[move.y][move.x]=p;
-        currentEmptySpaces.remove(move);
         int tempX;
         int tempY;
         Piece current;
-         for (int x = -1; x <= 1; x++) {
-             for (int y = -1; y <= 1; y++) {
-                 tempX=move.x+x;
-                 tempY=move.y+y;
-                 //check to make sure still in bounds of the array
-                 if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
-                     continue;
-                 current  = boardState[tempY][tempX];
-                 //if an empty space is reached or the same color search in this direction is over-Need a piece of the other color in the middle
-                 if(current==p||current==Piece.NONE)
-                     continue;
-                 //
-                 while (true) {
-                     //Move in the direction
-                     tempX += x;
-                     tempY += y;
-                     //stop searching in this direction if the bounds are broken
-                     if(tempX<0||tempY<0||tempX>=boardDimension||tempY>=boardDimension)
-                         break;
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                tempX = move.x + x;
+                tempY = move.y + y;
+                //check to make sure still in bounds of the array
+                if (tempX < 0 || tempY < 0 || tempX >= boardDimension || tempY >= boardDimension)
+                    continue;
+                current = boardState[tempY][tempX];
+                //if an empty space is reached or the same color search in this direction is over-Need a piece of the other color in the middle
+                if (current == p || current == Piece.NONE)
+                    continue;
+                //
+                while (true) {
+                    //Move in the direction
+                    tempX += x;
+                    tempY += y;
+                    //stop searching in this direction if the bounds are broken
+                    if (tempX < 0 || tempY < 0 || tempX >= boardDimension || tempY >= boardDimension)
+                        break;
 
-                     current = boardState[tempY][tempX];
+                    current = boardState[tempY][tempX];
 
-                     // If the algorithm finds another piece of the same color along a direction
-                     // start going backwards and flipping over pieces, and then stop going in this direction
-                     if (current == p) {
-                         while(true){
-                             tempX-=x;
-                             tempY-=y;
-                             boardState[tempY][tempX]=p;
-                             //stop flipping over once we've gotten back to the original spot
-                             if(tempX==move.x&&tempY==move.y)
-                                 break;
-                         }
-                         break;
-                     }
-                 }
-             }
+                    // If the algorithm finds another piece of the same color along a direction
+                    // start going backwards and flipping over pieces, and then stop going in this direction
+                    if (current == p) {
+                        while (true) {
+                            tempX -= x;
+                            tempY -= y;
+                            boardState[tempY][tempX] = p;
+                            //stop flipping over once we've gotten back to the original spot
+                            if (tempX == move.x && tempY == move.y)
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
 
         }
-
+        return new Board(boardState);
 
     }
 
+    LinkedHashSet<Point> getCurrentEmptySpaces() {
+        currentEmptySpaces = findEmptySpaces(boardState);
+        return currentEmptySpaces;
+    }
+
+    /**
+     * @param move the location to place the piece
+     * @param p    The piece type to place an the board location indicated by move
+     */
+    void performMove(java.awt.Point move, Piece p) {
+        boardState = simulateMove(move, p, this).getBoardState();
+        currentEmptySpaces = findEmptySpaces(boardState);
+    }
 
     @Override
     public String toString() {

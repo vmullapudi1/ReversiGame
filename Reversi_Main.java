@@ -53,6 +53,7 @@ class Reversi_Main {
                 break;
             }
             b.performMove(p,p1.getPiece());
+            JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG Print boardstate to console
             //System.out.println(b);
             p=p2.getMove(b);
@@ -61,24 +62,17 @@ class Reversi_Main {
                 break;
             }
             b.performMove(p,p2.getPiece());
+            JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG print boardstate to console
             //System.out.println(b);
 
         }
-        scoreGame();
+        displayScore(b);
 
     }
 
-    private static void scoreGame() {
-        int[]scores=new int[2];
-        for(Piece[]i:b.getBoardState()){
-            for(Piece j:i){
-                if(j==Piece.WHITE)
-                    scores[0]++;
-                else if(j==Piece.BLACK)
-                    scores[1]++;
-            }
-        }
+    private static void displayScore(Board b) {
+        int[] scores = Board.scoreGame(b);
         //Print scores and winner
         StringBuilder message=new StringBuilder("P1");
         if(p1 instanceof HumanPlayer){

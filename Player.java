@@ -14,12 +14,13 @@ abstract class Player {
     }
 
     private String playerName;
+
     /**
      * Default constructor
      */
     Player(Piece p, String name) {
         this.p = p;
-        this.playerName=name;
+        this.playerName = name;
     }
 
 
@@ -40,33 +41,35 @@ abstract class Player {
     LinkedHashSet<Point> legalMoves(Board b) {
         //Start with all the empty spaces-places where it is possible to put a piece
         LinkedHashSet<Point> candidates = b.getCurrentEmptySpaces();
-        LinkedHashSet<Point> moves=new LinkedHashSet<>();
+        LinkedHashSet<Point> moves = new LinkedHashSet<>();
         Piece[][] state = b.getBoardState();
-        int dimension=b.getBoardDimension();
+        int dimension = b.getBoardDimension();
         int tempX;
         int tempY;
         Piece current;
         for (Point p : candidates) {
             //check up, down,left/right, and all the diagonal directions for being terminated in a piece of the same color and having the other color in between
             searchLoop:
-            //the case where x,y=0,0 is ignored since that is an empty spot
+            //the case where x,y=0,0 is ignored since that isnt a search direction
             for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
-                    tempX=p.x+x;
-                    tempY=p.y+y;
-                    //check to make sure still in bounds of the array
-                    if(tempX<0||tempY<0||tempX>=dimension||tempY>=dimension)
+                    if (x == 0 && y == 0)
                         continue;
-                    current  = state[tempY][tempX];
+                    tempX = p.x + x;
+                    tempY = p.y + y;
+                    //check to make sure still in bounds of the array
+                    if (tempX < 0 || tempY < 0 || tempX >= dimension || tempY >= dimension)
+                        continue;
+                    current = state[tempY][tempX];
                     //if an empty space is reached or the same color search in this direction is over-Need a piece of the other color in the middle
-                    if(current==this.p||current==Piece.NONE)
+                    if (current == this.p || current == Piece.NONE)
                         continue;
                     while (true) {
                         //Move in the direction
                         tempX += x;
                         tempY += y;
                         //stop searching in this direction if the bounds are broken
-                        if(tempX<0||tempY<0||tempX>=dimension||tempY>=dimension)
+                        if (tempX < 0 || tempY < 0 || tempX >= dimension || tempY >= dimension)
                             break;
                         current = state[tempY][tempX];
 

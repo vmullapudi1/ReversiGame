@@ -18,6 +18,7 @@ public class HumanPlayer extends Player {
         super(p,name);
     }
 
+    @Override
     public Point getMove(Board b){
         LinkedHashSet<Point> legalMoves=super.legalMoves(b);
         Point[] moves=legalMoves.toArray(new Point[legalMoves.size()]);
