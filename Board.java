@@ -73,7 +73,7 @@ class Board {
         for(int i=0;i<c.length;i++){
             for(int j=0;j<c[i].length;j++){
                 if(c[i][j]==Piece.NONE)
-                    spaces.add(new Point(i,j));
+                    spaces.add(new Point(j, i));
             }
         }
         return spaces;

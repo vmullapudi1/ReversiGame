@@ -55,7 +55,7 @@ class Reversi_Main {
             b.performMove(p,p1.getPiece());
             JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG Print boardstate to console
-            //System.out.println(b);
+            System.out.println(b);
             p=p2.getMove(b);
             if(p==null) {
                 JOptionPane.showMessageDialog(null,"The game has ended, as no move was selected (game terminated or game over)");
@@ -64,7 +64,7 @@ class Reversi_Main {
             b.performMove(p,p2.getPiece());
             JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG print boardstate to console
-            //System.out.println(b);
+            System.out.println(b);
 
         }
         displayScore(b);
