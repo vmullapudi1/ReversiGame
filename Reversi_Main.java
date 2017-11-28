@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 /**
+ * @author Vishruth Mullapudi
+ * CS 2336.001-F17
+ * Run instructions: Run the main method in Reversi-Main class using an IDE or terminal to see printout record of moves and boardstates to sysout.
+ * Otherwise, can also (probably) run ReversiGame.jar, but this will not(probably not) result in the printouts, only dialog boxes from the game.
  * Initializes the board and players, runs the game
  */
 public class Reversi_Main {
