@@ -166,7 +166,7 @@ class Board {
      * @param move the location to place the piece
      * @param p    The piece type to place an the board location indicated by move
      */
-    void performMove(java.awt.Point move, Piece p) {
+    void performMove(Point move, Piece p) {
         boardState = simulateMove(move, p, this).getBoardState();
         currentEmptySpaces = findEmptySpaces(boardState);
     }

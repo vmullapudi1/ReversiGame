@@ -26,7 +26,7 @@ abstract class Player {
      * @return a point representing the location of the player's next move
      * An abstract method so hat both types of players can be asked for their next move
      */
-    public abstract java.awt.Point getMove(Board b);
+    public abstract Point getMove(Board b);
 
     /**
      * @return The Piece representing the piece color of the player
