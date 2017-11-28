@@ -54,7 +54,7 @@ public class Reversi_Main {
             separator.append('-');
         //Used to store the moves returned by the players to pass to the board
         Point p;
-        int[] scores = new int[2];
+        int[] scores;
         //Run the game until it is determined that the game has ended
         while(true){
             //Player 1 move
