@@ -45,6 +45,9 @@ public class Reversi_Main {
      * Runs the game until it is over
      */
     private static void startGame(){
+        StringBuilder separator = new StringBuilder(b.getBoardDimension() * 3);
+        for (int i = 0; i < b.getBoardDimension() * 3; i++)
+            separator.append('-');
         //Used to store the moves returned by the players to pass to the board
         Point p;
         //Run the game until it is determined that the game has ended
@@ -57,7 +60,9 @@ public class Reversi_Main {
             b.performMove(p,p1.getPiece());
             JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG Print boardstate to console
+            System.out.println(separator);
             System.out.println(b);
+            System.out.println("p1 Move Success: " + p);
             p=p2.getMove(b);
             if(p==null) {
                 JOptionPane.showMessageDialog(null,"The game has ended, as no move was selected (game terminated or game over)");
@@ -66,7 +71,9 @@ public class Reversi_Main {
             b.performMove(p,p2.getPiece());
             JOptionPane.showMessageDialog(null, b.toString());
             //DEBUG print boardstate to console
+            System.out.println(separator);
             System.out.println(b);
+            System.out.println("p2 Move Success: " + p);
 
         }
         //show the scores/who won
