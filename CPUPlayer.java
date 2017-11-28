@@ -87,10 +87,15 @@ public class CPUPlayer extends Player {
         int highestScoreIndex = 0;
         int max = netScore[0];
         for (int i = 1; i < netScore.length; i++) {
-            if (max < netScore[i]) {
+            //Adds some randomness in case two moves are scored the same
+            if (max == netScore[i] && Math.random() > 0.50) {
+                max = netScore[i];
+                highestScoreIndex = i;
+            } else if (max < netScore[i]) {
                 max = netScore[i];
                 highestScoreIndex = i;
             }
+
         }
         //play the best scored move
         return moveCandidates[highestScoreIndex];
