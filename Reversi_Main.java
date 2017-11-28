@@ -3,7 +3,7 @@ import java.awt.*;
 /**
  * Initializes the board and players, runs the game
  */
-class Reversi_Main {
+public class Reversi_Main {
     private static Board b;
     private static Player p1;
     private static Player p2;
