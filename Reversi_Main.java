@@ -54,34 +54,40 @@ public class Reversi_Main {
             separator.append('-');
         //Used to store the moves returned by the players to pass to the board
         Point p;
+        int[] scores = new int[2];
         //Run the game until it is determined that the game has ended
         while(true){
+            //Player 1 move
             p=p1.getMove(b);
             if(p==null) {
                 JOptionPane.showMessageDialog(null,"The game has ended due, as no move was selected (game terminated or game over)");
                 break;
             }
             b.performMove(p,p1.getPiece());
-            JOptionPane.showMessageDialog(null, b.toString());
+            scores = Board.scoreGame(b);
+            JOptionPane.showMessageDialog(null, b.toString() + "\nP1 Move at " + p + "\nScores: White:" + scores[0] + " Black:" + scores[1]);
             //DEBUG Print boardstate to console
             System.out.println(separator);
             System.out.println(b);
             System.out.println("p1 Move Success: " + p);
+            System.out.println("Scores: White:" + scores[0] + " Black:" + scores[1]);
+            //Player 2 move
             p=p2.getMove(b);
             if(p==null) {
                 JOptionPane.showMessageDialog(null,"The game has ended, as no move was selected (game terminated or game over)");
                 break;
             }
             b.performMove(p,p2.getPiece());
-            JOptionPane.showMessageDialog(null, b.toString());
+            JOptionPane.showMessageDialog(null, b.toString() + "\nP1 Move at " + p + "\nScores: White:" + scores[0] + " Black:" + scores[1]);
             //DEBUG print boardstate to console
             System.out.println(separator);
             System.out.println(b);
             System.out.println("p2 Move Success: " + p);
+            System.out.println("Scores: White:" + scores[0] + " Black:" + scores[1]);
 
         }
         //show the scores/who won
-        displayScore(b);
+        displayFinalScore(b);
     }
 
     /**
@@ -89,7 +95,7 @@ public class Reversi_Main {
      *
      * @param b the board to print the scores for
      */
-    private static void displayScore(Board b) {
+    private static void displayFinalScore(Board b) {
         int[] scores = Board.scoreGame(b);
         //Print scores and winner
         StringBuilder message = new StringBuilder();
